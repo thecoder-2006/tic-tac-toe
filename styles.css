@@ -1,0 +1,302 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 25%, #16213e 50%, #0f0f23 75%, #000000 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    overflow: hidden;
+}
+
+.game-container {
+    text-align: center;
+    padding: 30px; /* Increased padding for more internal space */
+    background: rgba(16, 16, 48, 0.8);
+    border-radius: 20px;
+    border: 2px solid #4a00ff;
+    box-shadow: 
+        0 0 30px rgba(74, 0, 255, 0.5),
+        inset 0 0 20px rgba(138, 43, 226, 0.1);
+    backdrop-filter: blur(10px);
+    animation: containerGlow 3s ease-in-out infinite alternate;
+    max-width: 500px; /* Added max-width to constrain container size */
+    width: 90%; /* Responsive width */
+}
+
+@keyframes containerGlow {
+    0% { box-shadow: 0 0 30px rgba(74, 0, 255, 0.5), inset 0 0 20px rgba(138, 43, 226, 0.1); }
+    100% { box-shadow: 0 0 50px rgba(74, 0, 255, 0.8), inset 0 0 30px rgba(138, 43, 226, 0.2); }
+}
+
+h1 {
+    font-size: 2.5rem; /* Slightly reduced for better balance */
+    margin-bottom: 25px; /* Increased margin for spacing */
+    background: linear-gradient(45deg, #8a2be2, #4a00ff, #00bfff, #8a2be2);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(138, 43, 226, 0.8);
+    animation: gradientShift 4s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 110px); /* Slightly reduced cell size for better fit */
+    grid-template-rows: repeat(3, 110px);
+    gap: 6px; /* Increased gap for clearer cell separation */
+    margin: 25px auto; /* Adjusted margin for balanced spacing */
+    padding: 15px; /* Reduced padding to fit within container */
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 15px;
+    border: 3px solid #4a00ff;
+    box-shadow: 
+        0 0 40px rgba(74, 0, 255, 0.6),
+        inset 0 0 20px rgba(138, 43, 226, 0.3);
+}
+
+.cell {
+    width: 110px; /* Match grid size */
+    height: 110px;
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 2px solid #4a00ff;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.8rem; /* Slightly smaller for better fit */
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.cell::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(74, 0, 255, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cell:hover::before {
+    opacity: 1;
+}
+
+.cell:hover {
+    transform: scale(1.05);
+    box-shadow: 
+        0 0 25px rgba(74, 0, 255, 0.8),
+        inset 0 0 15px rgba(138, 43, 226, 0.4);
+    border-color: #8a2be2;
+}
+
+.cell.x {
+    color: #00bfff;
+    text-shadow: 
+        0 0 10px #00bfff,
+        0 0 20px #00bfff,
+        0 0 30px #00bfff;
+    animation: pulseX 2s ease-in-out infinite;
+}
+
+.cell.o {
+    color: #ff1493;
+    text-shadow: 
+        0 0 10px #ff1493,
+        0 0 20px #ff1493,
+        0 0 30px #ff1493;
+    animation: pulseO 2s ease-in-out infinite;
+}
+
+@keyframes pulseX {
+    0%, 100% { text-shadow: 0 0 10px #00bfff, 0 0 20px #00bfff, 0 0 30px #00bfff; }
+    50% { text-shadow: 0 0 20px #00bfff, 0 0 30px #00bfff, 0 0 40px #00bfff; }
+}
+
+@keyframes pulseO {
+    0%, 100% { text-shadow: 0 0 10px #ff1493, 0 0 20px #ff1493, 0 0 30px #ff1493; }
+    50% { text-shadow: 0 0 20px #ff1493, 0 0 30px #ff1493, 0 0 40px #ff1493; }
+}
+
+.game-status {
+    font-size: 1.4rem; /* Slightly smaller for balance */
+    margin: 25px 0; /* Increased margin for spacing */
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.winner {
+    color: #00ff00;
+    text-shadow: 
+        0 0 10px #00ff00,
+        0 0 20px #00ff00,
+        0 0 30px #00ff00;
+    animation: winnerGlow 1s ease-in-out infinite alternate;
+}
+
+@keyframes winnerGlow {
+    0% { text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00; }
+    100% { text-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00; }
+}
+
+.reset-btn {
+    background: linear-gradient(45deg, #4a00ff, #8a2be2);
+    color: white;
+    border: none;
+    padding: 12px 25px; /* Slightly reduced padding */
+    font-size: 1.1rem; /* Slightly smaller for balance */
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 
+        0 0 20px rgba(74, 0, 255, 0.5),
+        inset 0 0 10px rgba(138, 43, 226, 0.2);
+    position: relative;
+    overflow: hidden;
+    margin-top: 20px; /* Added margin for spacing */
+}
+
+.reset-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transform: rotate(45deg);
+    transition: all 0.5s ease;
+    opacity: 0;
+}
+
+.reset-btn:hover::before {
+    opacity: 1;
+    animation: shimmer 0.5s ease-in-out;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
+}
+
+.reset-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 0 30px rgba(74, 0, 255, 0.8),
+        inset 0 0 15px rgba(138, 43, 226, 0.3);
+}
+
+.winning-line {
+    background: linear-gradient(45deg, #00ff00, #00bfff);
+    animation: winningLine 1s ease-in-out infinite alternate;
+}
+
+@keyframes winningLine {
+    0% { box-shadow: 0 0 20px rgba(0, 255, 0, 0.8); }
+    100% { box-shadow: 0 0 40px rgba(0, 255, 0, 1); }
+}
+
+.score-board {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0; /* Adjusted margin */
+    padding: 12px; /* Slightly reduced padding */
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    border: 1px solid #4a00ff;
+    width: 100%; /* Ensure full width within container */
+}
+
+.score {
+    text-align: center;
+    font-size: 1rem; /* Slightly smaller for balance */
+}
+
+.score-label {
+    color: #8a2be2;
+    font-weight: bold;
+    margin-bottom: 8px; /* Increased for spacing */
+}
+
+.score-value {
+    font-size: 1.4rem; /* Slightly smaller */
+    font-weight: bold;
+}
+
+.x-score { color: #00bfff; }
+.o-score { color: #ff1493; }
+.tie-score { color: #ffffff; }
+
+@media (max-width: 480px) {
+    .game-container {
+        padding: 20px; /* Reduced padding for smaller screens */
+    }
+
+    .game-board {
+        grid-template-columns: repeat(3, 90px); /* Smaller cells for mobile */
+        grid-template-rows: repeat(3, 90px);
+        gap: 5px; /* Slightly smaller gap */
+        margin: 20px auto;
+        padding: 10px;
+    }
+    
+    .cell {
+        width: 90px;
+        height: 90px;
+        font-size: 2.2rem; /* Adjusted for smaller cells */
+    }
+    
+    h1 {
+        font-size: 1.8rem; /* Smaller for mobile */
+        margin-bottom: 20px;
+    }
+
+    .game-status {
+        font-size: 1.2rem;
+        margin: 20px 0;
+    }
+
+    .reset-btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+        margin-top: 15px;
+    }
+
+    .score-board {
+        padding: 10px;
+        margin: 15px 0;
+    }
+
+    .score {
+        font-size: 0.9rem;
+    }
+
+    .score-value {
+        font-size: 1.2rem;
+    }
+}
